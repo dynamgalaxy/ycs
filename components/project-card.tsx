@@ -16,7 +16,6 @@ export function ProjectCard({ project, index, total = projects.length, featured 
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting && !video.paused) {
         video.pause();
-        video.currentTime = 0;
         setPreviewPlaying(false);
       }
     }, { threshold: 0.1 });
@@ -37,7 +36,6 @@ export function ProjectCard({ project, index, total = projects.length, featured 
     const video = videoRef.current;
     if (!video) return;
     video.pause();
-    video.currentTime = 0;
     setPreviewPlaying(false);
   };
 
@@ -86,7 +84,8 @@ export function ProjectCard({ project, index, total = projects.length, featured 
 
   return (
     <article className="project-card" data-layout={project.layout} data-reveal="rise" style={{ "--reveal-delay": `${Math.min(index, 5) * 65}ms` } as React.CSSProperties}>
-      <Link href={`/projects/${project.slug}`} className={`project-media${previewPlaying ? " is-playing" : ""}`} data-reveal={project.layout === "portrait" ? "mask-bottom" : project.layout === "square" ? "mask-right" : "mask"} data-cursor="VIEW PROJECT" aria-label={`View ${project.title}`} onPointerMove={moveImage} onPointerEnter={startPreview} onPointerLeave={(event) => { stopPreview(); resetImage(event); }} onFocus={() => startPreview()} onBlur={stopPreview}>
+      {/* RevealObserver owns is-visible; keep className stable across playback renders. */}
+      <Link href={`/projects/${project.slug}`} className="project-media" data-preview-playing={previewPlaying || undefined} data-reveal={project.layout === "portrait" ? "mask-bottom" : project.layout === "square" ? "mask-right" : "mask"} data-cursor="VIEW PROJECT" aria-label={`View ${project.title}`} onPointerMove={moveImage} onPointerEnter={startPreview} onPointerLeave={(event) => { stopPreview(); resetImage(event); }} onFocus={() => startPreview()} onBlur={stopPreview}>
         <Image className="project-poster" src={project.image} alt={project.imageAlt} fill sizes={sizes} quality={82} />
         {project.previewVideo && <video ref={videoRef} className="project-preview-video" poster={project.image} muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1} onPlaying={(event) => revealDecodedFrame(event.currentTarget)} onError={() => setPreviewPlaying(false)}>
           {project.previewVideo.webm && <source src={project.previewVideo.webm} type="video/webm" />}

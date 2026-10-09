@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
 import { useEffect, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { usePathname } from "next/navigation";
 
@@ -37,7 +37,7 @@ export function Navigation() {
         </div>
         <Link href="/contact" className="nav-cta">Start a project <ArrowUpRight size={12} aria-hidden="true" /></Link>
         <button type="button" className="mobile-menu" aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>
-          {menuOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
+          <span className={`menu-lines${menuOpen ? " is-open" : ""}`} aria-hidden="true"><span /><span /></span>
         </button>
       </nav>
       <div id="mobile-navigation" className={`mobile-panel${menuOpen ? " is-open" : ""}`} aria-hidden={!menuOpen} inert={!menuOpen}>
@@ -65,7 +65,7 @@ export function Footer() {
           </nav>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Yousaf’s Creative Studio</span>
+          <span>© 2026 Yousaf’s Creative Studio | Gift by Dynam Galaxy</span>
           <span>Islamabad, Pakistan · Working everywhere</span>
           <span><Link href="/privacy">Privacy</Link> &nbsp;·&nbsp; <Link href="/terms">Terms</Link> &nbsp;·&nbsp; <Link href="/sitemap">Sitemap</Link></span>
         </div>
